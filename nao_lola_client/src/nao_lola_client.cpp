@@ -126,7 +126,7 @@ void NaoLolaClient::createSubscriptions()
   RCLCPP_DEBUG(get_logger(), "Initialise subscriptions");
   joint_positions_sub =
     create_subscription<nao_lola_command_msgs::msg::JointPositions>(
-    "effectors/joint_positions", 1,
+    "effectors/joint_positions", rclcpp::QoS(100).best_effort(),
     [this](const nao_lola_command_msgs::msg::JointPositions & jointPositions) {
       std::lock_guard<std::mutex> guard(packer_mutex);
       packer.setJointPositions(jointPositions);
@@ -135,7 +135,7 @@ void NaoLolaClient::createSubscriptions()
 
   joint_stiffnesses_sub =
     create_subscription<nao_lola_command_msgs::msg::JointStiffnesses>(
-    "effectors/joint_stiffnesses", 1,
+    "effectors/joint_stiffnesses", rclcpp::QoS(100).best_effort(),
     [this](const nao_lola_command_msgs::msg::JointStiffnesses & jointStiffnesses) {
       std::lock_guard<std::mutex> guard(packer_mutex);
       packer.setJointStiffnesses(jointStiffnesses);
